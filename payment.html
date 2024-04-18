@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Payment</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .payment-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .payment-details {
+      margin-bottom: 20px;
+    }
+
+    .total {
+      font-weight: bold;
+    }
+
+    .payment-method {
+      margin-bottom: 20px;
+    }
+
+    .payment-method input[type="text"], 
+    .payment-method input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .payment-method input[type="submit"] {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .payment-method input[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-container">
+    <h2>Payment</h2>
+
+    <div class="payment-details">
+      <h3>Basket Summary</h3>
+      <div id="basket-summary"></div>
+      <p class="total" id="total">Total: $0</p>
+    </div>
+
+    <div class="payment-method">
+      <h3>Payment Method</h3>
+      <form id="payment-form">
+        <input type="text" placeholder="Cardholder's Name" required><br>
+        <input type="text" placeholder="Card Number" required><br>
+        <input type="text" placeholder="Expiration Date (MM/YYYY)" required><br>
+        <input type="number" placeholder="CVV" required><br>
+        <input type="text" placeholder="Zip Code" required><br>
+        <input type="checkbox" id="shipping-agreement" required>
+        <label for="shipping-agreement">I agree to the shipping terms and conditions</label><br>
+        <input type="submit" value="Pay Now">
+      </form>
+    </div>
+  </div>
+
+  <script>
+  // Retrieve basket items from local storage
+  var basketItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+  var total = 0;
+
+  if (basketItems.length > 0) {
+    var basketSummary = document.getElementById('basket-summary');
+
+    basketItems.forEach(function(item) {
+      var itemDiv = document.createElement('div');
+      itemDiv.textContent = item.name + ' - $' + item.price;
+      basketSummary.appendChild(itemDiv);
+      total += item.price;
+    });
+
+    document.getElementById('total').textContent = 'Total: $' + total;
+  } else {
+    basketSummary.textContent = "Your basket is empty.";
+  }
+</script>
+</body>
+</html>

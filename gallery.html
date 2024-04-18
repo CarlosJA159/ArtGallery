@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carlos Arredondo's Art Gallery</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      grid-gap: 20px;
+    }
+     .title {
+      text-align: center;
+      font-size: 36px;
+      font-family: 'Arial Black', sans-serif; /* Change font to desired font */
+      margin-bottom: 20px;
+      color: #333333;
+    }
+
+    .art-piece {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      position: relative; /* Added for positioning */
+    }
+
+    .art-piece img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .art-piece h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 18px;
+      color: #333333;
+    }
+
+    .art-piece p {
+      margin-top: 0;
+      color: #666666;
+    }
+
+    .art-piece .price {
+      font-weight: bold;
+      color: #007bff;
+    }
+
+    .add-to-basket {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .add-to-basket:hover {
+      background-color: #0056b3;
+    }
+
+    #basket {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .basket-title {
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 24px;
+      color: #333333;
+    }
+
+    .basket-summary {
+      margin-bottom: 10px;
+    }
+
+    .basket-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #dddddd;
+      padding-bottom: 5px;
+    }
+
+    .basket-item:last-child {
+      border-bottom: none;
+    }
+
+    .remove-from-basket {
+      background-color: #ff4d4d;
+      color: #ffffff;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .remove-from-basket:hover {
+      background-color: #cc0000;
+    }
+
+    .checkout-btn {
+      background-color: #007bff;
+      color: #ffffff;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .checkout-btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="gallery">
+    <div class="art-piece" id="artwork1">
+      <img src="artwork1.jpg" alt="Artwork 1">
+      <h3>Artwork 1</h3>
+      <p>Description of artwork 1.</p>
+      <p class="price">$100</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 1', 100)">Add to Basket</button>
+    </div>
+    <div class="art-piece" id="artwork2">
+      <img src="artwork2.jpg" alt="Artwork 2">
+      <h3>Artwork 2</h3>
+      <p>Description of artwork 2.</p>
+      <p class="price">$150</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 2', 150)">Add to Basket</button>
+    </div>
+    <div class="art-piece" id="artwork3">
+      <img src="artwork3.jpg" alt="Artwork 3">
+      <h3>Artwork 3</h3>
+      <p>Description of artwork 3.</p>
+      <p class="price">$120</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 3', 120)">Add to Basket</button>
+    </div>
+    <div class="art-piece" id="artwork4">
+      <img src="artwork4.jpg" alt="Artwork 4">
+      <h3>Artwork 4</h3>
+      <p>Description of artwork 4.</p>
+      <p class="price">$200</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 4', 200)">Add to Basket</button>
+    </div>
+    <div class="art-piece" id="artwork5">
+      <img src="artwork5.jpg" alt="Artwork 5">
+      <h3>Artwork 5</h3>
+      <p>Description of artwork 5.</p>
+      <p class="price">$180</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 5', 180)">Add to Basket</button>
+    </div>
+    <div class="art-piece" id="artwork6">
+      <img src="artwork6.jpg" alt="Artwork 6">
+      <h3>Artwork 6</h3>
+      <p>Description of artwork 6.</p>
+      <p class="price">$250</p>
+      <button class="add-to-basket" onclick="addToBasket('Artwork 6', 250)">Add to Basket</button>
+    </div><!-- Add more art pieces here -->
+  </div>
+
+  <div id="basket">
+    <h2 class="basket-title">Your Basket</h2>
+    <div class="basket-summary" id="basket-summary"></div>
+    <p class="total" id="total">Total: $0</p>
+    <button class="checkout-btn" onclick="checkout()">Checkout</button>
+  </div>
+
+  <script>
+      function addToBasket(artworkName, price) {
+      var basketItem = { name: artworkName, price: price };
+      var basketItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+      basketItems.push(basketItem);
+      localStorage.setItem('basketItems', JSON.stringify(basketItems));
+      updateBasketSummary();
+    }
+
+    function updateBasketSummary() {
+      var basketItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+      var basketSummary = document.getElementById('basket-summary');
+      var total = 0;
+
+      basketSummary.innerHTML = ''; // Clear previous items
+
+      if (basketItems.length > 0) {
+        basketItems.forEach(function(item, index) {
+          var itemDiv = document.createElement('div');
+          itemDiv.className = 'basket-item';
+          itemDiv.textContent = item.name + ' - $' + item.price;
+          var removeButton = document.createElement('button');
+          removeButton.textContent = 'Remove';
+          removeButton.className = 'remove-from-basket';
+          removeButton.onclick = function() {
+            removeFromBasket(index);
+          };
+          itemDiv.appendChild(removeButton);
+          basketSummary.appendChild(itemDiv);
+          total += item.price;
+        });
+        document.getElementById('total').textContent = 'Total: $' + total;
+      } else {
+        basketSummary.textContent = "Your basket is empty.";
+        document.getElementById('total').textContent = 'Total: $0';
+      }
+    }
+
+    // Call updateBasketSummary on page load
+    updateBasketSummary();
+
+    function removeFromBasket(index) {
+      var basketItems = JSON.parse(localStorage.getItem('basketItems')) || [];
+      basketItems.splice(index, 1);
+      localStorage.setItem('basketItems', JSON.stringify(basketItems));
+      updateBasketSummary();
+    }
+
+    function checkout() {
+      // Redirect to the payment page
+      window.location.href = "payment.html";
+    }
+  </script>
+</body>
+</html>
